@@ -129,7 +129,7 @@
 .calendal-Cover{
     margin-top:25px;
 }
-.dayselect{
+.daydiv{
     cursor: pointer;
 }
 #next,#back{
