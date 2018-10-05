@@ -257,6 +257,10 @@ let CalendalApp = function(){
             calendalMovable();
             show(month,curday-1);
             itemCheck();
+            addBtnSetting();
+            AllBtnSetting();
+            ActiveBtnSetting();
+            CompletedBtnSetting();
             let daydiv = document.querySelectorAll(".daydiv");
             daydiv[curday-1].classList.add("choice");
             
@@ -334,24 +338,36 @@ let CalendalApp = function(){
             let addbtn = document.getElementById("addbtn");
             addbtn.addEventListener('click',
                 ()=>{
-                    let inputObj = document.getElementById("inputObj");
-                    if( inputObj.value !== ""){
-                        let p = pTagCreate();
-                        let span = spanTagrender();
-                        divTagrender(p,span);
-                        addfunc();
-                    }
+                    addBtnEventfunc();
                     itemCheck();
                 });
         
+            
+            document.addEventListener('keypress',
+                (ev)=>{
+                    let keyname = ev.key;
+                    if(keyname=="Enter"){
+                        addBtnEventfunc();
+                        itemCheck();
+                    }
+                });
+            }
+        function addBtnEventfunc(){
+            let inputObj = document.getElementById("inputObj");
+            if( inputObj.value !== ""){
+                let p = pTagCreate();
+                let span = spanTagrender();
+                divTagrender(p,span);
+                Objpush();
+            }
             function pTagCreate(){
                 let p = pTag();
                 p.innerHTML = inputObj.value;
                 return p;
             }
         }
-        //추가버튼 클릭시 실행되는함수로써 배열에 객체를 push함
-        function addfunc(){
+        //추가버튼 클릭시 실행되는함수로써 생성해놓은배열에 객체를 push함
+        function Objpush(){
             todoObj.push({store:inputObj.value,doneCheck:false});
             inputObj.value='';
             console.log(todoObj);
@@ -429,10 +445,7 @@ let CalendalApp = function(){
                     }
                 })
         }
-        addBtnSetting();
-        AllBtnSetting();
-        ActiveBtnSetting();
-        CompletedBtnSetting();
+        
         
 }
 CalendalApp();
