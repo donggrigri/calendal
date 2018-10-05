@@ -151,12 +151,6 @@ let CalendalApp = function(){
 
 
 
-
-        
-
-
-
-
         //달력 이동 기능
         function calendalMovable(){//nextback
             let next = document.getElementById("next");
@@ -268,10 +262,9 @@ let CalendalApp = function(){
             
         }
 
-        
+        //가지고있는 텍스트 및 밑줄여부 foreach로 나타냄
         function show(month,day){
-            todoObj = todoAppArray[month][day];
-            
+            todoObj = todoAppArray[month][day];    
             let todoBody = document.getElementsByClassName("todoBody");
             todoBody[0].innerHTML = '';
             todoObj.forEach( (currentValue)=>{
@@ -280,14 +273,16 @@ let CalendalApp = function(){
                 divTagrender(p,span);
                 });
         }
+        //foreach 함수에서 사용되는 함수로 각각의obj를 가져와 pTag생성후 값대입
         function pTagrender(currentValue){
-               let p = pTag();
-                p.innerHTML = currentValue.store;
-                if(currentValue.doneCheck){
-                    p.classList.add("done");
-                }
+            let p = pTag();
+            p.innerHTML = currentValue.store;
+            if(currentValue.doneCheck){
+                p.classList.add("done");
+            }
             return p;
         }
+        //spanTag 생성
         function spanTagrender(){
             let spanTag = document.createElement("span");
                 spanTag.innerHTML = "[ 삭제 ]";
@@ -295,6 +290,7 @@ let CalendalApp = function(){
                 spanTag.addEventListener('click',(ev)=>{spanTagClickEvFunc(ev,spanTag)});
             return spanTag;
         }
+        //div의 자식태그로 p , span 추가
         function divTagrender(p,span){
             let divTag = document.createElement("div");
             let todoBody = document.getElementsByClassName("todoBody");
@@ -303,6 +299,7 @@ let CalendalApp = function(){
             divTag.appendChild(span);
             todoBody[0].appendChild(divTag);
         }
+        //pTag 생성시 클릭이벤트 설정에사용하는 함수
         function pTagClickEvFunc(ev,pTag){
             pTag.classList.toggle("done");
             let targetContent = ev.target.innerHTML;
@@ -314,12 +311,14 @@ let CalendalApp = function(){
             }
             itemCheck();
         }
+        //pTag 생성
         function pTag(){
             let pTag = document.createElement("p");
             pTag.addEventListener('click',(ev)=>{pTagClickEvFunc(ev,pTag)});
             pTag.classList.add("content");
             return pTag;
         }
+        //spanTag 생성시 클릭이벤트 설정에 사용되는 함수
         function spanTagClickEvFunc(ev,spanTag){
             let todoBody = document.getElementsByClassName("todoBody");
             let removeIndexnum =todoObj.findIndex(removeText);
@@ -330,6 +329,7 @@ let CalendalApp = function(){
                 return ele.store==spanTag.previousSibling.innerHTML;
             }
         }
+        //추가버튼 이벤트설정함수
         function addBtnSetting(){
             let addbtn = document.getElementById("addbtn");
             addbtn.addEventListener('click',
@@ -350,12 +350,14 @@ let CalendalApp = function(){
                 return p;
             }
         }
+        //추가버튼 클릭시 실행되는함수로써 배열에 객체를 push함
         function addfunc(){
             todoObj.push({store:inputObj.value,doneCheck:false});
             inputObj.value='';
             console.log(todoObj);
         }
-        function itemCheck(){
+        //done 체크되어있지않은 item 갯수를 체크, 0개일떄는 invisible
+            function itemCheck(){
             let count=0;
             let itemleft = document.getElementsByClassName("itemleft");
             let content = document.getElementsByClassName("content");
@@ -372,6 +374,7 @@ let CalendalApp = function(){
                 todoFooter[0].classList.add("invisible");
             }
         }
+        //월 일 에 해당하는 배열을 생성
         function Arraycreate(){
             for(let i=0; i<monthlastnum.length;i++){
                 todoAppArray[i]=[];
@@ -383,7 +386,7 @@ let CalendalApp = function(){
         }       
         
 
-
+        
         function AllBtnSetting(){
             let AllBtn = document.getElementById("All");
             AllBtn.addEventListener('click',()=>{
@@ -398,34 +401,35 @@ let CalendalApp = function(){
 
         function CompletedBtnSetting(){
             let CompletedBtn = document.getElementById("Completed");
-            CompletedBtn.addEventListener('click',()=>{
-                let itembox = document.getElementsByClassName("itembox");
-                let content = document.getElementsByClassName("content");
-                for(let i=0; i<itembox.length; i++){
-                    if( content[i].classList.contains("done") ){
-                        itembox[i].classList.remove("invisible");
-                    }else{
-                        itembox[i].classList.add("invisible");
-                }
-            }
-        })
+            CompletedBtn.addEventListener('click',
+                ()=>{
+                    let itembox = document.getElementsByClassName("itembox");
+                    let content = document.getElementsByClassName("content");
+                    for(let i=0; i<itembox.length; i++){
+                        if( content[i].classList.contains("done") ){
+                            itembox[i].classList.remove("invisible");
+                        }else{
+                            itembox[i].classList.add("invisible");
+                        }
+                    }
+            })
         }
         function ActiveBtnSetting(){
             let ActiveBtn = document.getElementById("Active");
-            ActiveBtn.addEventListener('click',()=>{
-                let itembox = document.getElementsByClassName("itembox");
-                let content = document.getElementsByClassName("content");
-                for(let i=0; i<itembox.length; i++){
-                    if( content[i].classList.contains("done") ){
-                        itembox[i].classList.add("invisible");
-                    }else{
-                    itembox[i].classList.remove("invisible");
+            ActiveBtn.addEventListener('click',
+                ()=>{
+                    let itembox = document.getElementsByClassName("itembox");
+                    let content = document.getElementsByClassName("content");
+                    for(let i=0; i<itembox.length; i++){
+                        if( content[i].classList.contains("done") ){
+                            itembox[i].classList.add("invisible");
+                        }else{
+                        itembox[i].classList.remove("invisible");
+                        }
                     }
-                }
-            })
+                })
         }
         addBtnSetting();
-        
         AllBtnSetting();
         ActiveBtnSetting();
         CompletedBtnSetting();
