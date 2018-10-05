@@ -64,10 +64,10 @@
     width:660px;
     height: 400px;
     display: flex;
-    margin:0 auto;
     background-image: linear-gradient(to right bottom,#ffb900,#ff7730);
     border-radius: 5%;
-    margin-bottom: 200px;
+    
+
 }
 
 
@@ -134,4 +134,123 @@
 }
 #next,#back{
     cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+.Total-Container{
+    display: flex;
+    margin-left: 150px;
+}
+
+.todoApp{
+    width: 500px;
+    border-radius: 2.5%;
+    background-image: linear-gradient(to right bottom ,#e3f2fd,#42a5f5);
+    display: inline-block;
+    
+    
+}
+.todoHeader{
+    text-align: center;
+}
+.todoBody{
+    overflow: auto;
+}
+
+
+
+
+.itembox{
+    border: 5px solid #00acc1;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding:20px;
+}
+.done{
+    text-decoration: line-through;
+}
+.delete{
+    cursor: pointer;
+    color: red;
+}
+.content{
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+
+
+
+.todoFooter{
+    display: flex;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    
+}
+.itemleft{
+    width:83px;
+    cursor:default;
+}
+.todoFooter_btngroup{
+    width:200px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 70px;
+    
+}
+.invisible{
+    display: none;
+}
+
+.primary{
+    font-size: 40px;
+    color: white;
+}
+
+#All{
+    background-color: transparent;
+    border:none;
+    color:white;
+    width:40px;
+    cursor: pointer;
+}
+#Active{
+    color:white;
+    background-color: transparent;
+    border:none;
+    width:50px;
+    cursor: pointer;
+}
+#Completed{
+    color:white;
+    background-color: transparent;
+    border:none;
+    cursor: pointer;
+}
+#inputObj{
+    width:250px;
+    padding:10px 10px;
+    border: 2px solid grey;
+}
+#addbtn{
+    height: 42px;
+    width:100px;
+    border:2px solid white;
+    background-color: #ffe082;
+}
+.inputBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

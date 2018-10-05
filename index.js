@@ -130,18 +130,33 @@ watch();
 
 
 /* Calendal*/
-let CalendalApp = function(){;
+let CalendalApp = function(){
         let calendal = document.getElementById("calendal");
         let today = new Date();//당일 월 계산하기위한 date //usedate
         let month = today.getMonth();
         let year = today.getFullYear();
         let curday = today.getDate();//usedateday
 
+        let todoAppArray = [];
+        let doneCheck = [];
+        let store = [];
+
         let monthlastnum = [31,28,31,30,31,30,31,31,30,31,30,31];
         const week = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         const monthnames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         const colorpicker = ["red","green","coral","pink","#9e47ef","gold","#4286f4"];
+        Arraycreate();
         initialize(month);//실행시 오늘날짜 정의
+
+
+
+
+
+
+        
+
+
+
 
         //달력 이동 기능
         function calendalMovable(){//nextback
@@ -176,8 +191,11 @@ let CalendalApp = function(){;
                     break;
                 }
             }
-
             ev.target.classList.add("choice");
+            
+            //클릭하면 n번쨰 객체에서 쇼함수 실행 하고 addbtn 실행
+            show(month,content-1);
+            itemCheck();
         }
 //월 변경 후 기존삭제 후 새로 draw
         function moveCalendalBtn(number){
@@ -201,14 +219,16 @@ let CalendalApp = function(){;
             navmonth.innerHTML = `${monthname} 2018`;
         }
 
-
 //달력 일수 + 시작요일위치 만큼 생성 후 시작일부터 클래스네임추가
         function calendalCreate(month){//daycreate
             let startposition = firstdayName(month);
+            
             for(let i=0; i < startposition + monthlastnum[month]; i++){
                 let el = document.createElement("div");
+                
                 if(i >= startposition){
                     el.setAttribute('class','daydiv');
+                     
                 }
                 calendal.appendChild(el);
             }
@@ -242,8 +262,187 @@ let CalendalApp = function(){;
             selectedDay(curday);
             calendalTopText(month);
             calendalMovable();
+            show(month,curday-1);
+            itemCheck();
             let daydiv = document.querySelectorAll(".daydiv");
             daydiv[curday-1].classList.add("choice");
         }
+
+
+
+
+
+
+
+        
+        function show(month,day){
+            store = todoAppArray[month][day];
+            
+            let todoBody = document.getElementsByClassName("todoBody");
+            todoBody[0].innerHTML = '';
+            store.forEach( (currentValue)=>{
+                let pTag = document.createElement("p");
+                pTag.addEventListener('click',()=>{
+                    pTag.classList.toggle("done");
+                    itemCheck();
+                });
+                pTag.classList.add("content");
+                pTag.innerHTML = currentValue;
+    
+                let spanTag = document.createElement("span");
+                spanTag.innerHTML = "[ 삭제 ]";
+                spanTag.classList.add("delete");
+                spanTag.addEventListener('click',()=>{
+                    let removeIndexnum =store.findIndex(removeText);
+                    store.splice(removeIndexnum,1);
+                    todoBody[0].removeChild(spanTag.parentNode);
+                    itemCheck();
+                    function removeText(ele){
+                        return ele==spanTag.previousSibling.innerHTML;
+                    }
+                });
+                let divTag = document.createElement("div");
+                divTag.classList.add("itembox");
+                divTag.appendChild(pTag);
+                divTag.appendChild(spanTag);
+                todoBody[0].appendChild(divTag);
+                    
+                });
+        }
+        function addBtnSetting(){
+            let addbtn = document.getElementById("addbtn");
+            addbtn.addEventListener('click',
+                function(){
+                let inputObj = document.getElementById("inputObj");
+                if( inputObj.value !== ""){
+                    let p = pTagCreate();
+                    let span = sPanTagCreate();
+                    divTagCreate(p,span);
+                    addfunc();
+                }
+                itemCheck();
+                console.log(store);
+            });
+        
+            function pTagCreate(){
+                let pTag = document.createElement("p");
+                pTag.addEventListener('click',()=>{
+                    pTag.classList.toggle("done");
+                    itemCheck();
+                })
+                pTag.classList.add("content");
+                pTag.innerHTML = inputObj.value;
+                
+                return pTag;
+            }
+            function sPanTagCreate(){
+                let todoBody = document.getElementsByClassName("todoBody");
+                let spanTag = document.createElement("span");
+                spanTag.innerHTML = "[ 삭제 ]";
+                spanTag.classList.add("delete");
+                spanTag.addEventListener('click',()=>{
+                    let removeIndexnum =store.findIndex(removeText);
+                    store.splice(removeIndexnum,1);
+                    todoBody[0].removeChild(spanTag.parentNode);
+                    itemCheck();
+                });
+                return spanTag;
+                //findIndex함수 사용 function
+                function removeText(ele){
+                    return ele==spanTag.previousSibling.innerHTML;
+                }
+            }
+            function divTagCreate(p,span){
+                let todoBody = document.getElementsByClassName("todoBody");
+                let divTag = document.createElement("div");
+                divTag.classList.add("itembox");
+                divTag.appendChild(p);
+                divTag.appendChild(span);
+                todoBody[0].appendChild(divTag);
+    
+                itemCheck();
+            }
+            
+        }
+        function addfunc(){
+            store.push(inputObj.value);
+            inputObj.value='';
+        }
+        function itemCheck(){
+            let count=0;
+            let itemleft = document.getElementsByClassName("itemleft");
+            let content = document.getElementsByClassName("content");
+            for(let i=0; i<content.length; i++){
+                if( !content[i].classList.contains("done") ){
+                    count++;
+                }
+            }
+            itemleft[0].innerHTML = `${count} item left`;
+            let todoFooter = document.getElementsByClassName("todoFooter");
+            if(store.length > 0 ) {
+                todoFooter[0].classList.remove("invisible");
+            }else{
+                todoFooter[0].classList.add("invisible");
+            }
+        }
+        function Arraycreate(){
+            for(let i=0; i<monthlastnum.length;i++){
+                todoAppArray[i]=[];
+                doneCheck[i]=[];
+                for(let j=0; j<monthlastnum[i];j++){
+                    todoAppArray[i][j]=[];
+                    doneCheck[i][j]=[];
+                }
+            }
+        }       
+        
+
+
+        function AllBtnSetting(){
+            let AllBtn = document.getElementById("All");
+            AllBtn.addEventListener('click',()=>{
+            let itembox = document.getElementsByClassName("itembox");
+            for(let i=0; i<itembox.length; i++){
+                if(itembox[i].classList.contains("invisible")){
+                    itembox[i].classList.remove("invisible");
+                }
+            }
+        })
+        }
+
+        function CompletedBtnSetting(){
+            let CompletedBtn = document.getElementById("Completed");
+            CompletedBtn.addEventListener('click',()=>{
+                let itembox = document.getElementsByClassName("itembox");
+                let content = document.getElementsByClassName("content");
+                for(let i=0; i<itembox.length; i++){
+                    if( content[i].classList.contains("done") ){
+                        itembox[i].classList.remove("invisible");
+                    }else{
+                        itembox[i].classList.add("invisible");
+                }
+            }
+        })
+        }
+        function ActiveBtnSetting(){
+            let ActiveBtn = document.getElementById("Active");
+            ActiveBtn.addEventListener('click',()=>{
+                let itembox = document.getElementsByClassName("itembox");
+                let content = document.getElementsByClassName("content");
+                for(let i=0; i<itembox.length; i++){
+                    if( content[i].classList.contains("done") ){
+                        itembox[i].classList.add("invisible");
+                    }else{
+                    itembox[i].classList.remove("invisible");
+                    }
+                }
+            })
+        }
+        addBtnSetting();
+        
+        AllBtnSetting();
+        ActiveBtnSetting();
+        CompletedBtnSetting();
+        
 }
 CalendalApp();
